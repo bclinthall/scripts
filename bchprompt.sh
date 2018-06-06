@@ -13,7 +13,7 @@ function generate_prompt() {
     GIT_PS1_SHOWCOLORHINTS=TRUE
     GIT_PS1_SHOWUPSTREAM="auto"
 
-    export PS1='\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]$(__git_ps1 "(%s)")$ '
+    export PS1='\[\033[01;32m\]\h:\u\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]$(__git_ps1 "(%s)")$ '
 	history -a # save history to disk after each prompt is generated
 }
 export PROMPT_COMMAND=generate_prompt
