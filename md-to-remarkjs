@@ -1,0 +1,24 @@
+#!/bin/bash
+processedName=Processed${1}
+
+SECTION_START="layout: true\nsection: \1\n##{{ section }}\n---\n"
+
+sed -r "
+    s/\+\+(-+)/\n\1\n/; 
+    s/\+\+/\n/; 
+    s/^##\s+(.*)$/${SECTION_START}/;
+    s/~(.*?)~/<sub>\1\<\/sub>/; 
+" <$1 >$processedName
+
+args=`echo $@ | sed s/$1/$processedName/`
+base=`basename $1 .md`
+base=`basename $base .markdown`
+
+if [ ! -e slides ]; then 
+    mkdir slides
+fi
+
+markdown-to-slides -i $args -o slides/$base.html
+rm $processedName
+
+#s/^(.*?)^/<sup>\t<\/sup>/;  

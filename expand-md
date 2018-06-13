@@ -1,0 +1,8 @@
+#!/bin/bash
+expandedName=Expanded${1}
+
+sed -r "
+    s/\+\+(-+)/\n\1\n/; 
+    s/\+\+/\n/; 
+" <$1 >$expandedName
+

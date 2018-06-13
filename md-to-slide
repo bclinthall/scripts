@@ -1,24 +1,30 @@
 #!/bin/bash
-processedName=Processed${1}
 
-SECTION_START="layout: true\nsection: \1\n##{{ section }}\n---\n"
+if [ $# -ne 1 ]; then
+	echo "please provide name of markdown file as the sole argument"
+	exit
+fi
 
-sed -r "
-    s/\+\+(-+)/\n\1\n/; 
-    s/\+\+/\n/; 
-    s/^##\s+(.*)$/${SECTION_START}/;
-    s/~(.*?)~/<sub>\1\<\/sub>/; 
-" <$1 >$processedName
-
-args=`echo $@ | sed s/$1/$processedName/`
-base=`basename $1 .md`
-base=`basename $base .markdown`
+if [ ! -e $1 ]; then
+	echo "no file named '$1' exist in current working directory."
+	exit
+fi
 
 if [ ! -e slides ]; then 
     mkdir slides
 fi
 
-markdown-to-slides $args -o slides/$base.html
-rm $processedName
+base=`basename $1 .md`
+base=`basename $base .markdown`
 
-#s/^(.*?)^/<sup>\t<\/sup>/;  
+cat $1 \
+| sed 's/^#/\n#/g' \
+| pandoc -s -f markdown+tex_math_dollars -t beamer -V theme=Hannover -V colortheme=seahorse --slide-level 2 -o slides/$base.pdf 
+
+
+#| pandoc -s -f markdown+tex_math_dollars -t revealjs --slide-level 2 -o 5week.html
+#| pandoc -f markdown+tex_math_dollars -t latex  -o 5week.pdf
+
+#I really like Darmstadt theme
+#| pandoc -s -f markdown+tex_math_dollars -t beamer -V theme=Darmstadt -V colortheme=dolphin --slide-level 2 -o 5week.beamer.pdf 
+

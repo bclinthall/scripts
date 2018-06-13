@@ -1,6 +1,6 @@
 #!/bin/bash
 
 SCRIPTDIR=`pwd`
-echo "source $SCRIPTDIR/bchprompt.sh" >> $HOME/.bashr
+cat <bchprompt.sh >> $HOME/.bashrc
 
 cp $SCRIPTDIR/tmux.conf $HOME/.tmux.conf
